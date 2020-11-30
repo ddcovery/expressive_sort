@@ -1,8 +1,8 @@
 # expressive_sort
 
-In this [answere](https://es.quora.com/Por-qu%C3%A9-la-mayor%C3%ADa-de-los-desarrolladores-estudian-solo-lenguajes-muy-simples-como-JavaScript-y-Python-en-lugar-de-aprender-un-lenguaje-verdadero-como-C-2/answer/Antonio-Cabrera-52) I wrote about javascript/python expressiveness vs Go/Rust/D/... performance.
+In this quora [answere](https://es.quora.com/Por-qu%C3%A9-la-mayor%C3%ADa-de-los-desarrolladores-estudian-solo-lenguajes-muy-simples-como-JavaScript-y-Python-en-lugar-de-aprender-un-lenguaje-verdadero-como-C-2/answer/Antonio-Cabrera-52) I wrote about javascript/python expressiveness vs Go/Rust/D/... performance.
 
-As an example, I mentioned the "3 lines" haskell quick sort and wrote a javascript version
+As an example, I mentioned the "3 lines" haskell quick sort and wrote this javascript version
 
 ```javascript
 const sorted = ([pivot, ...others]) => pivot === void 0 ? [] : [
@@ -11,9 +11,8 @@ const sorted = ([pivot, ...others]) => pivot === void 0 ? [] : [
   ...sorted(others.filter(n => n >= pivot))
 ];
 ```
-The "sorted" version of an array as an expression:  it is the array that, given any of it's elements, the left ones are a sorted version of the items smaller than it, and the right ones are a sorted version of the items bigger than it.
 
-This, of course, is not a real "quick sort" because the original one is an imperative algorithm thought for an "in place" sorting (without additional memory space allocation).  This is a functional oriented expression that exemplarizes how expressive a "functional" orientation can be.
+This, of course, is not a real "quick sort" because the original one is an imperative algorithm thought for an "in place" sorting (without additional memory space allocation).  This is a functional oriented expression that exemplarizes how expressive a "functional" orientation can be (You "express" that the sorted version of an array is, given one of it's elements, the sorted version of the smaller ones, plus the item, plus the sorted version of the bigger ones).
 
 As an enthusiastic newbie to the "[D](https://dlang.org)" programming language, I thought that D could affort this expressivenes too... 
 
