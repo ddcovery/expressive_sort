@@ -33,9 +33,65 @@ T[] sorted(T)(T[] items)
 Seeing the similarities, as a developer, I can assume that javascript and D versions are doing the same "under the scenes": 
 * The ```[...array1, ...array2, ...array3]``` javascript is equivalent to the ```array1 ~ array2 ~ array3``` D code.  That is, a new array is being generated as a result of copying the elements of the original 3. 
 
-* The ```.filter!(...).array``` D code is using a "Range" to filter the elements and the ".array()" method to materializes the selected elements as an array.  Internally, it is similar to the javascript code where ```.filter(...)``` iterates and selects the resulting elements and finally materializes the array
+* The ```.filter!(...).array``` D code is using a "Range" to filter the elements and the ".array()" method to materialize the selected elements as an array.  Internally, it is similar to the javascript code where ```.filter(...)``` iterates and selects the resulting elements and finally materializes the array
 
-An then Wich one will perform better?  The interpreted one (javascript) or the nativelly compiled
+## Wich one will perform better?  
+Here comes the surpriese (at least for me):  Javascript version performs better than D version (about **30% faster for 1_000_000 random Float64 numbers**).
+
+* Javascript:  1507 ms
+* D:  2166 ms
+
+Then, I decided to write similar code in other languajes and compare.
+
+In python:
+
+```python
+def qs(items):
+  return [] if len(items) == 0 else \
+    qs([lt for lt in items[1:] if lt < items[0]]) + \
+    items[0:1] + \
+    qs([ge for ge in items[1:] if ge >= items[0]])
+```
+
+The result? **5135 ms** (3,4 times slower than javascript)
+
+In crystal:
+
+```crystal
+def qs(a : Array(Float64)) : Array(Float64)
+  return a.size == 0 ? [] of Float64  :
+    qs(a[1..].select { |x| x < a[0] }) +
+    [ a[0] ] +
+    qs(a[1..].select { |x| x >= a[0] })
+end
+```
+
+The result? **1853.0 ms** (14% faster than D, but 23% slower than Javascript).
+
+The results comparing 4 languajes and different sets of data is:
+
+```
+# Crystal
+1.0M: 1853.0 ms
+1.5M: 2865.0 ms
+3.0M: 5994.0 ms
+6.0M: 13144.0 ms
+# D
+1.0M: 2166 ms
+1.5M: 3608 ms
+3.0M: 7350 ms
+6.0M: 15243 ms
+# JavasScript
+1.0M: 1507 ms
+1.5M: 2165 ms
+3.0M: 5655 ms
+6.0M: 10776 ms
+# Python
+1.0M: 5135 ms
+1.5M: 7939 ms
+3.0M: 18908 ms
+6.0M: 42458 ms
+```
 
 
 
