@@ -38,10 +38,10 @@ Seeing the similarities, as a developer, I can assume that javascript and D vers
 ## Wich one will perform better?  
 Here comes the surpriese (at least for me):  Javascript version performs better than D version (about **30% faster for 1_000_000 random Float64 numbers**).
 
-* Javascript:  1507 ms
-* D:  2166 ms
+* Javascript:  **1507 ms**
+* D:  **2166 ms**
 
-Then, I decided to write similar code in other languajes and compare.
+I decided to write similar code in other languajes and compare.
 
 In python:
 
@@ -68,7 +68,7 @@ end
 
 The result? **1853.0 ms** (14% faster than D, but 23% slower than Javascript).
 
-The results comparing 4 languajes and different sets of data is:
+The resulting final table for different sets of data 
 
 ```
 # Crystal
