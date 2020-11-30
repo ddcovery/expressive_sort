@@ -30,7 +30,7 @@ T[] sorted(T)(T[] items)
 
 >  **note**: **sorted** is a *templated method* (**T** is the type of the elements of the array): "under the scenes", D compiler detects if the final used type is comparable (i.e.:  it is a class with a **opCmp** method, or it is a numerical type, or ...):  yo don't need to tell compiler that T extends something like *"IComparable"* because D libraries are not "interface" based:  D prefers to use "conventions" and check them using instrospection at compile time (D developers code compile-time code and run-time code at the same time:  D allows you to mix them naturally).
 
-Seeing the similarities, as a developer, I can assume that the two expressions are doing the same "under the scenes": 
+Seeing the similarities, as a developer, I can assume that javascript and D versions are doing the same "under the scenes": 
 * The ```[...array1, ...array2, ...array3]``` javascript is equivalent to the ```array1 ~ array2 ~ array3``` D code.  That is, a new array is being generated as a result of copying the elements of the original 3. 
 
 * The ```.filter!(...).array``` D code is using a "Range" to filter the elements and the ".array()" method to materializes the selected elements as an array.  Internally, it is similar to the javascript code where ```.filter(...)``` iterates and selects the resulting elements and finally materializes the array
