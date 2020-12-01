@@ -95,7 +95,7 @@ The resulting final table for different sets of data
 3.0M: 18908 ms
 6.0M: 42458 ms
 ```
-## Do no know how to improve?
+## Do you know how to improve?
 I include the code to the 4 tests.  Please, tell me if you see something we can improve:
 * Avoid imperative instructions:  "sorted" must be an unique expression or, at least, an unique "return ..." statement funcion.  
 * Of course, you can't use built-in library sort methods :-)
