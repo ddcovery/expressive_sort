@@ -12,7 +12,7 @@ const sorted = ([pivot, ...others]) => pivot === void 0 ? [] : [
 ];
 ```
 
-This, of course, is not a real "quick sort" because the original one is an imperative algorithm thought for an "in place" sorting (without additional memory space allocation).  This is a functional oriented expression that exemplarizes how expressive a "functional" orientation can be (You "express" that the sorted version of an array is, given one of it's elements, the sorted version of the smaller ones, plus the item, plus the sorted version of the bigger ones).
+This, of course, is not a "quick sort" because the original one is an "in place" algorithm that doesn't require additional memory space allocation.  This is a functional oriented expression that exemplarizes how expressive a "functional" orientation can be (You "express" that the sorted version of an array is, given one of it's elements, the sorted version of the smaller ones, plus the item, plus the sorted version of the bigger ones).
 
 As an enthusiastic newbie to the "[D](https://dlang.org)" programming language, I thought that D could affort this expressivenes too...
 
