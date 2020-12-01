@@ -14,7 +14,7 @@ const sorted = ([pivot, ...others]) => pivot === void 0 ? [] : [
 
 This, of course, is not a real "quick sort" because the original one is an imperative algorithm thought for an "in place" sorting (without additional memory space allocation).  This is a functional oriented expression that exemplarizes how expressive a "functional" orientation can be (You "express" that the sorted version of an array is, given one of it's elements, the sorted version of the smaller ones, plus the item, plus the sorted version of the bigger ones).
 
-As an enthusiastic newbie to the "[D](https://dlang.org)" programming language, I thought that D could affort this expressivenes too... 
+As an enthusiastic newbie to the "[D](https://dlang.org)" programming language, I thought that D could affort this expressivenes too...
 
 D has no support for destructuring as javascript has (remember de ```sorted([pivot, ...others])```), but it has **lambdas**, **map/filter/reduce** support, **array slices** and **array concatenation** that allows you to write easily a similar expression:
 
@@ -28,14 +28,15 @@ T[] sorted(T)(T[] items)
 }
 ```
 
->  **note**: **sorted** is a *templated method* (**T** is the type of the elements of the array): "under the scenes", D compiler detects if the final used type is comparable (i.e.:  it is a class with a **opCmp** method, or it is a numerical type, or ...):  yo don't need to tell compiler that T extends something like *"IComparable"* because D libraries are not "interface" based:  D prefers to use "conventions" and check them using instrospection at compile time (D developers code compile-time code and run-time code at the same time:  D allows you to mix them naturally).
+> **note**: **sorted** is a *templated method* (**T** is the type of the elements of the array): "under the scenes", D compiler detects if the final used type is comparable (i.e.:  it is a class with a **opCmp** method, or it is a numerical type, or ...):  yo don't need to tell compiler that T extends something like *"IComparable"* because D libraries are not "interface" based:  D prefers to use "conventions" and check them using instrospection at compile time (D developers code compile-time code and run-time code at the same time:  D allows you to mix them naturally).
 
-Seeing the similarities, as a developer, I can assume that javascript and D versions are doing the same "under the scenes": 
-* The ```[...array1, ...array2, ...array3]``` javascript is equivalent to the ```array1 ~ array2 ~ array3``` D code.  That is, a new array is being generated as a result of copying the elements of the original 3. 
+Seeing the similarities, as a developer, I can assume that javascript and D versions are doing the same "under the scenes":
 
+* The ```[...array1, ...array2, ...array3]``` javascript is equivalent to the ```array1 ~ array2 ~ array3``` D code.  That is, a new array is being generated as a result of copying the elements of the original 3.
 * The ```.filter!(...).array``` D code is using a "Range" to filter the elements and the ".array()" method to materialize the selected elements as an array.  Internally, it is similar to the javascript code where ```.filter(...)``` iterates and selects the resulting elements and finally materializes the array
 
-## Wich one will perform better?  
+## Wich one will perform better?
+
 Here comes the surpriese (at least for me):  Javascript version performs better than D version (about **30% faster for 1_000_000 random Float64 numbers**).
 
 * Javascript:  **1507 ms**
@@ -46,29 +47,29 @@ I decided to write similar code in other languajes and compare.
 In python:
 
 ```python
-def qs(items):
+def sorted(items):
   return [] if len(items) == 0 else \
-    qs([lt for lt in items[1:] if lt < items[0]]) + \
+    sorted([item for item in items[1:] if item < items[0]]) + \
     items[0:1] + \
-    qs([ge for ge in items[1:] if ge >= items[0]])
+    sorted([item for item in items[1:] if item >= items[0]])
 ```
 
 The result? **5135 ms** (3,4 times slower than javascript)
 
 In crystal:
 
-```crystal
-def qs(a : Array(Float64)) : Array(Float64)
+```ruby
+def sorted(a : Array(Float64)) : Array(Float64)
   return a.size == 0 ? [] of Float64  :
-    qs(a[1..].select { |x| x < a[0] }) +
+    sorted(a[1..].select { |x| x < a[0] }) +
     [ a[0] ] +
-    qs(a[1..].select { |x| x >= a[0] })
+    sorted(a[1..].select { |x| x >= a[0] })
 end
 ```
 
 The result? **1853.0 ms** (14% faster than D, but 23% slower than Javascript).
 
-The resulting final table for different sets of data 
+The resulting final table for different sets of data
 
 ```
 # Crystal
@@ -93,11 +94,70 @@ The resulting final table for different sets of data
 6.0M: 42458 ms
 ```
 
+## Running the tests
 
+### Prerequisites
 
+All tests has been executed on a Ubuntu 20.04 linux.  
 
+You must intall Nodejs, Python, DMD compiler and Crystal compiler
 
+* **Python**:  Ubuntu comes with **python 3** preinstalled.  Test the version with
 
+```shell
+$ pythong3 --version
+```
 
+* **D**:  I use **DMD** and, particullary, the **rdmd** command that allows you to compile/exe on the fly a **.d** file.  DMD is in Ubuntu official repositories
 
+```shell
+$ sudo apt install dmd
+...
+$ dmd --version
+DMD64 D Compiler v2.093.0
+Copyright (C) 1999-2020 by The D Language Foundation, All Rights Reserved written by Walter Bright
 
+$ rdmd
+rdmd build 20200707
+Usage: rdmd [RDMD AND DMD OPTIONS]... program [PROGRAM OPTIONS]...
+Builds (with dependents) and runs a D program.
+Example: rdmd -release myprog --myprogparm 5
+
+```
+
+* Crystal: You must add the repository to your Ubuntu software sources and install it  (see [guide](https://crystal-lang.org/install/on_ubuntu/) for more information )
+* Javascript:  Test runs on Node, I use node 12.20 (see [NodeSource distributions](https://github.com/nodesource/distributions/blob/master/README.md) for more information)
+
+### Running the test
+
+You can run all languajes tests using tests.sh
+
+```shell
+$ test.sh
+```
+
+Or test one of them
+
+D:
+
+```shell
+$ rdmd sorted.d --release
+```
+
+Crystal:
+
+```shell
+$ crystal sorted.cr --release
+```
+
+Python
+
+```shell
+$ python3 sorted.py
+```
+
+Javascript
+
+```shell
+$ node sorted.js
+```
