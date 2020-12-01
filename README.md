@@ -71,6 +71,8 @@ The result? **1853.0 ms** (14% faster than D, but 23% slower than Javascript).
 
 The resulting final table for different sets of data
 
+![Process time](assets/process_time_graph.png)
+
 ```
 # Crystal
 1.0M: 1853.0 ms
