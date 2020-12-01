@@ -14,7 +14,7 @@ const sorted = ([pivot, ...others]) => pivot === void 0 ? [] : [
 
 This, of course, is not a "quick sort" because the original one is an "in place" algorithm that doesn't require additional memory space allocation.  This is a functional oriented expression that exemplarizes how expressive a "functional" orientation can be (You "express" that the sorted version of an array is, given one of it's elements, the sorted version of the smaller ones, plus the item, plus the sorted version of the bigger ones).
 
-As an enthusiastic newbie to the "[D](https://dlang.org)" programming language, I thought that D could affort this expressivenes too...
+As an enthusiastic newbie to the "[D](https://dlang.org)" programming language, I thought that D could affort this expressiveness too...
 
 D has no support for destructuring as javascript has (remember de ```sorted([pivot, ...others])```), but it has **lambdas**, **map/filter/reduce** support, **array slices** and **array concatenation** that allows you to write easily a similar expression:
 
@@ -37,7 +37,7 @@ Seeing the similarities, I assume (I really don't know) that javascript and D ve
 
 ## Wich one will perform better?
 
-Here comes the surpriese (at least for me):  Javascript version performs better than D version (about **30% faster for 1_000_000 random Float64 numbers**).
+Here comes the surprise (at least for me):  Javascript version performs better than D version (about **30% faster for 1_000_000 random Float64 numbers**).
 
 * Javascript:  **1507 ms**
 * D:  **2166 ms**
