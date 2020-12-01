@@ -74,6 +74,11 @@ The resulting final table for different sets of data
 ![Process time](assets/process_time_graph.png)
 
 ```
+# JavasScript
+1.0M: 1507 ms
+1.5M: 2165 ms
+3.0M: 5655 ms
+6.0M: 10776 ms
 # Crystal
 1.0M: 1853.0 ms
 1.5M: 2865.0 ms
@@ -84,17 +89,18 @@ The resulting final table for different sets of data
 1.5M: 3608 ms
 3.0M: 7350 ms
 6.0M: 15243 ms
-# JavasScript
-1.0M: 1507 ms
-1.5M: 2165 ms
-3.0M: 5655 ms
-6.0M: 10776 ms
 # Python
 1.0M: 5135 ms
 1.5M: 7939 ms
 3.0M: 18908 ms
 6.0M: 42458 ms
 ```
+## Do no know how to improve?
+I include the code to the 4 tests.  Please, tell me if you see something we can improve:
+* Avoid imperative instructions:  "sorted" must be an unique expression or, at least, an unique "return ..." statement funcion.  
+* Of course, you can't use built-in library sort methods :-)
+* Remember that this is not a quick-sort performance test (that, obviously, can be implemented in a more efficient way)
+
 
 ## Running the tests
 
