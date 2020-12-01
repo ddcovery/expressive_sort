@@ -99,34 +99,29 @@ The resulting final table for different sets of data
 ### Prerequisites
 
 All tests has been executed on a Ubuntu 20.04 linux.  
+Tests require **Nodejs**, **Python3**, **DMD** compiler and **Crystal** compiler
 
-You must intall Nodejs, Python, DMD compiler and Crystal compiler
+**Javascript**:  Test runs on Node, I use node 12.20 (see [NodeSource distributions](https://github.com/nodesource/distributions/blob/master/README.md) for more information)
 
-* **Python**:  Ubuntu comes with **python 3** preinstalled.  Test the version with
-
+**Python**:  Ubuntu comes with **python 3** preinstalled.  Test the version with
 ```shell
 $ pythong3 --version
 ```
-
-* **D**:  I use **DMD** and, particullary, the **rdmd** command that allows you to compile/exe on the fly a **.d** file.  DMD is in Ubuntu official repositories
-
+**D**:  I use **DMD** and, particullary, the **rdmd** command that allows you to compile/exe on the fly a **.d** file.  DMD is in Ubuntu official repositories
 ```shell
 $ sudo apt install dmd
 ...
 $ dmd --version
 DMD64 D Compiler v2.093.0
 Copyright (C) 1999-2020 by The D Language Foundation, All Rights Reserved written by Walter Bright
-
 $ rdmd
 rdmd build 20200707
 Usage: rdmd [RDMD AND DMD OPTIONS]... program [PROGRAM OPTIONS]...
 Builds (with dependents) and runs a D program.
 Example: rdmd -release myprog --myprogparm 5
-
 ```
 
-* Crystal: You must add the repository to your Ubuntu software sources and install it  (see [guide](https://crystal-lang.org/install/on_ubuntu/) for more information )
-* Javascript:  Test runs on Node, I use node 12.20 (see [NodeSource distributions](https://github.com/nodesource/distributions/blob/master/README.md) for more information)
+**Crystal**: You must add the repository to your Ubuntu software sources and install it  (see [guide](https://crystal-lang.org/install/on_ubuntu/) for more information )
 
 ### Running the test
 
@@ -136,28 +131,21 @@ You can run all languajes tests using tests.sh
 $ test.sh
 ```
 
-Or test one of them
+Or test them individually
 
-D:
-
+**D**
 ```shell
 $ rdmd sorted.d --release
 ```
-
-Crystal:
-
+**Javascript**
+```shell
+$ node sorted.js
+```
+**Crystal**
 ```shell
 $ crystal sorted.cr --release
 ```
-
-Python
-
+**Python**
 ```shell
 $ python3 sorted.py
-```
-
-Javascript
-
-```shell
-$ node sorted.js
 ```
