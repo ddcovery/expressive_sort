@@ -16,11 +16,11 @@ puts "3.0M: #{r3M} ms"
 puts "6.0M: #{r6M} ms"
 #puts "Ok"
 
-def sorted(a : Array(Float64)) : Array(Float64)
-  return a.size == 0 ? [] of Float64  :
-    sorted(a[1..].select { |x| x < a[0] }) +
-    [ a[0] ] +
-    sorted(a[1..].select { |x| x >= a[0] })
+def sorted(items : Array(Float64)) : Array(Float64)
+  return items.size == 0 ? [] of Float64  :
+    sorted(items[1..].select { |item| item < items[0] }) +
+    [ items[0] ] +
+    sorted(items[1..].select { |item| item >= items[0] })
 end
 
 def measure

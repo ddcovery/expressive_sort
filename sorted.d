@@ -2,7 +2,6 @@
 void main()
 {
   import std.stdio : writefln;
-  import std.random : Random, uniform, unpredictableSeed;
   import std.datetime.stopwatch : benchmark;
 
   writefln("# D");
@@ -35,15 +34,15 @@ T[] sorted(T)(T[] items)
   import std.array : array;
 
   return items.length == 0 ? [] : 
-    sorted(items[1 .. $].filter!(p => p < items[0]).array) ~ 
+    sorted( items[1 .. $].filter!(item => item < items[0]).array() ) ~ 
     items[0 .. 1] ~ 
-    sorted(items[1 .. $].filter!(p => p >= items[0]).array);
+    sorted( items[1 .. $].filter!(item => item >= items[0]).array() );
 }
 double [] generateNumbers(int howMany)
 {
   import std.range: generate, take;  
-  import std.array:array;
-  import std.random : Random, uniform, unpredictableSeed;
+  import std.array: array;
+  import std.random: Random, uniform, unpredictableSeed;
   auto rnd = Random(unpredictableSeed); 
   return generate!(() => uniform(0.,1.,rnd) )().take(howMany).array();
   
