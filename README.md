@@ -39,8 +39,13 @@ Seeing the similarities, I assume (I really don't know) that javascript and D ve
 
 Here comes the surprise (at least for me):  Javascript version performs better than D version (about **30% faster for 1_000_000 random Float64 numbers**).
 
-* Javascript:  **1507 ms**
-* D:  **2166 ms**
+* Javascript (node):  **1610 ms**
+* D (DMD compiler):  **2017 ms**
+
+Main problem is DMD compiler (compiles fast, but performance is not the best).  D has various compilers... the **lcd2** compiler can generate optimized binaries
+
+* D (LDC2 compiler):  **772 ms**
+
 
 I decided to write similar code in other languajes and compare.
 
@@ -54,8 +59,6 @@ def sorted(items):
     sorted([item for item in items[1:] if item >= items[0]])
 ```
 
-The result? **5135 ms** (3,4 times slower than javascript)
-
 In crystal:
 
 ```ruby
@@ -67,33 +70,37 @@ def sorted(a : Array(Float64)) : Array(Float64)
 end
 ```
 
-The result? **1853.0 ms** (14% faster than D, but 23% slower than Javascript).
-
 The resulting final table for different sets of data
 
 ![Process time](assets/process_time_graph.png)
 
 ```
-# JavasScript
-1.0M: 1507 ms
-1.5M: 2165 ms
-3.0M: 5655 ms
-6.0M: 10776 ms
-# Crystal
-1.0M: 1853.0 ms
-1.5M: 2865.0 ms
-3.0M: 5994.0 ms
-6.0M: 13144.0 ms
-# D
-1.0M: 2166 ms
-1.5M: 3608 ms
-3.0M: 7350 ms
-6.0M: 15243 ms
-# Python
-1.0M: 5135 ms
-1.5M: 7939 ms
-3.0M: 18908 ms
-6.0M: 42458 ms
+D (LCD)
+1.0M: 772 ms
+1.5M: 1152 ms
+3.0M: 2398 ms
+6.0M: 4952 ms
+javascript (node)
+1.0M: 1610 ms
+1.5M: 2355 ms
+3.0M: 5760 ms
+6.0M: 9829 ms
+Crystal
+1.0M: 1888.0 ms
+1.5M: 2829.0 ms
+3.0M: 5813.0 ms
+6.0M: 12477.0 ms
+D (DMD)
+1.0M: 2017 ms
+1.5M: 2974 ms
+3.0M: 6285 ms
+6.0M: 13328 ms
+python
+1.0M: 4445 ms
+1.5M: 7698 ms
+3.0M: 17826 ms
+6.0M: 41000 ms
+
 ```
 ## Do you know how to improve?
 I include the code to the 4 tests.  Please, tell me if you see something we can improve:
@@ -115,18 +122,21 @@ Tests require **Nodejs**, **Python3**, **DMD** compiler and **Crystal** compiler
 ```shell
 $ pythong3 --version
 ```
-**D**:  I use **DMD** and, particullary, the **rdmd** command that allows you to compile/exe on the fly a **.d** file.  DMD is in Ubuntu official repositories
+**D**:  We use **DMD** and **LDC**. The two ones are available in Ubuntu official repositories.
 ```shell
 $ sudo apt install dmd
+$ sudo apt install ldc
 ...
 $ dmd --version
 DMD64 D Compiler v2.093.0
 Copyright (C) 1999-2020 by The D Language Foundation, All Rights Reserved written by Walter Bright
-$ rdmd
-rdmd build 20200707
-Usage: rdmd [RDMD AND DMD OPTIONS]... program [PROGRAM OPTIONS]...
-Builds (with dependents) and runs a D program.
-Example: rdmd -release myprog --myprogparm 5
+$ ldc2 --version
+LDC - the LLVM D compiler (1.20.1):
+  based on DMD v2.090.1 and LLVM 10.0.0
+  built with LDC - the LLVM D compiler (1.20.1)
+  Default target: x86_64-pc-linux-gnu
+  Host CPU: skylake
+  http://dlang.org - http://wiki.dlang.org/LDC
 ```
 
 **Crystal**: You must add the repository to your Ubuntu software sources and install it  (see [guide](https://crystal-lang.org/install/on_ubuntu/) for more information )
@@ -141,9 +151,13 @@ $ test.sh
 
 Or test them individually
 
-**D**
+**D (LDC)**
 ```shell
-$ rdmd sorted.d --release
+$ ldc2 -O -release  --run sorted.d 
+```
+**D (DMD)**
+```shell
+$ dmd -O -run sorted.d
 ```
 **Javascript**
 ```shell
