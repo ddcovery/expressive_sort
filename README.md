@@ -42,10 +42,9 @@ Here comes the surprise (at least for me):  Javascript version performs better t
 * Javascript (node):  **1610 ms**
 * D (DMD compiler):  **2017 ms**
 
-Main problem is DMD compiler (compiles fast, but performance is not the best).  D has various compilers... the **lcd2** compiler can generate optimized binaries
+Main problem is DMD compiler (compiles fast, but resulting executable is poorly optimized).  A good alternative is the **lcd2** compiler that generates can generate optimized binaries
 
 * D (LDC2 compiler):  **772 ms**
-
 
 I decided to write similar code in other languajes and compare.
 
@@ -75,54 +74,59 @@ The resulting final table for different sets of data
 ![Process time](assets/process_time_graph.png)
 
 ```
-D (LCD)
-1.0M: 772 ms
-1.5M: 1152 ms
-3.0M: 2398 ms
-6.0M: 4952 ms
-javascript (node)
-1.0M: 1610 ms
-1.5M: 2355 ms
-3.0M: 5760 ms
-6.0M: 9829 ms
-Crystal
-1.0M: 1888.0 ms
-1.5M: 2829.0 ms
-3.0M: 5813.0 ms
-6.0M: 12477.0 ms
 D (DMD)
-1.0M: 2017 ms
-1.5M: 2974 ms
-3.0M: 6285 ms
-6.0M: 13328 ms
+1.0M: 1838 ms
+1.5M: 2833 ms
+3.0M: 5885 ms
+6.0M: 12016 ms
+D (LCD)
+1.0M: 665 ms
+1.5M: 1074 ms
+3.0M: 2234 ms
+6.0M: 4500 ms
+Crystal
+1.0M: 771.0 ms
+1.5M: 1152.0 ms
+3.0M: 2321.0 ms
+6.0M: 4772.0 ms
+javascript (node)
+1.0M: 1342 ms
+1.5M: 2119.6 ms
+3.0M: 5187.2 ms
+6.0M: 9785.2 ms
 python
-1.0M: 4445 ms
-1.5M: 7698 ms
-3.0M: 17826 ms
-6.0M: 41000 ms
+1.0M: 4509 ms
+1.5M: 7691 ms
+3.0M: 19277 ms
+6.0M: 42620 ms
 
 ```
+
 ## Do you know how to improve?
+
 I include the code to the 4 tests.  Please, tell me if you see something we can improve:
-* Avoid imperative instructions:  "sorted" must be an unique expression or, at least, an unique "return ..." statement funcion.  
+
+* Avoid imperative instructions:  "sorted" must be an unique expression or, at least, an unique "return ..." statement funcion.
 * Of course, you can't use built-in library sort methods :-)
 * Remember that this is not a quick-sort performance test (that, obviously, can be implemented in a more efficient way)
-
 
 ## Running the tests
 
 ### Prerequisites
 
-All tests has been executed on a Ubuntu 20.04 linux.  
+All tests has been executed on a Ubuntu 20.04 linux.
 Tests require **Nodejs**, **Python3**, **DMD** compiler and **Crystal** compiler
 
 **Javascript**:  Test runs on Node, I use node 12.20 (see [NodeSource distributions](https://github.com/nodesource/distributions/blob/master/README.md) for more information)
 
 **Python**:  Ubuntu comes with **python 3** preinstalled.  Test the version with
+
 ```shell
 $ pythong3 --version
 ```
+
 **D**:  We use **DMD** and **LDC**. The two ones are available in Ubuntu official repositories.
+
 ```shell
 $ sudo apt install dmd
 $ sudo apt install ldc
@@ -152,22 +156,31 @@ $ test.sh
 Or test them individually
 
 **D (LDC)**
+
 ```shell
-$ ldc2 -O -release  --run sorted.d 
+$ ldc2 -O5 -release -enable-cross-module-inlining --run sorted.d 
 ```
+
 **D (DMD)**
+
 ```shell
-$ dmd -O -run sorted.d
+$ dmd -O -release -run sorted.d
 ```
+
 **Javascript**
+
 ```shell
 $ node sorted.js
 ```
+
 **Crystal**
+
 ```shell
-$ crystal sorted.cr --release
+$ crystal run sorted.cr --release
 ```
+
 **Python**
+
 ```shell
 $ python3 sorted.py
 ```
