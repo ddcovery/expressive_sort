@@ -13,10 +13,10 @@ const numbers6M = [...Array(6000000).keys()].map(i => Math.random());
 //console.log("Testing");
 
 const [t1M, t1M5, t3M, t6M] = [
-  measure(() => sorted(numbers1M)),
-  measure(() => sorted(numbers1M5)),
-  measure(() => sorted(numbers3M)),
-  measure(() => sorted(numbers6M))
+  measure(5, () => sorted(numbers1M)),
+  measure(5, () => sorted(numbers1M5)),
+  measure(5, () => sorted(numbers3M)),
+  measure(5, () => sorted(numbers6M))
 ]
 
 console.log("1.0M:", t1M, "ms");
@@ -26,8 +26,12 @@ console.log("6.0M:", t6M, "ms");
 
 //console.log("ok");
 
-function measure(f) {
-  const t_ini = Date.now();
-  f();
-  return Date.now() - t_ini; 
+function measure(times, f) {
+  let total = 0;
+  for(let n=0;n<times;n++){
+    const t_ini = Date.now();
+    f();
+    total+= Date.now() - t_ini; 
+  }
+  return total/Math.max(1,times);
 }
