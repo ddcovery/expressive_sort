@@ -69,7 +69,7 @@ def sorted(a : Array(Float64)) : Array(Float64)
 end
 ```
 
-The resulting final table for different sets of data
+The resulting final table for different sets of data (and applying compilers release/optimization params):
 
 ![Process time](assets/process_time_graph.png)
 
