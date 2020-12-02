@@ -1,12 +1,11 @@
 #!/usr/bin/env sh
-
+echo "D (DMD)"
+dmd -O -release -run sorted.d
 echo "D (LCD)"
-ldc2 -O -release  --run sorted.d 
+ldc2 -O5 -release -enable-cross-module-inlining --run sorted.d 
+echo "Crystal"
+crystal run sorted.cr --release 
 echo "javascript (node)"
 node sorted.js 
-echo "Crystal"
-crystal sorted.cr --release 
-echo "D (DMD)"
-dmd -O -run sorted.d
 echo "python"
 python3 sorted.py
