@@ -69,7 +69,7 @@ def sorted(a : Array(Float64)) : Array(Float64)
 end
 ```
 
-The resulting final table for different sets of data (and applying compilers release/optimization params):
+The resulting final table for different sets of data
 
 ![Process time](assets/process_time_graph.png)
 
@@ -115,42 +115,32 @@ I include the code to the 4 tests.  Please, tell me if you see something we can 
 ### Prerequisites
 
 All tests has been executed on a Ubuntu 20.04 linux.
-Tests require **Nodejs**, **Python3**, **DMD** compiler and **Crystal** compiler
+
+Tests require **Nodejs**, **Python3**, **DMD**/**LDC** D compilers and **Crystal** compiler
 
 **Javascript**:  Test runs on Node, I use node 12.20 (see [NodeSource distributions](https://github.com/nodesource/distributions/blob/master/README.md) for more information)
 
-**Python**:  Ubuntu comes with **python 3** preinstalled.  Test the version with
+**Python**:  Ubuntu comes with **python 3** preinstalled.
+
+**D**:  We use **DMD** and **LDC** compilers. They are available in **apt**  and **snap** repositories (see [guide](https://dlang.org/download.html) ) **.
+
+Because ldc2 version is newest in snap, I use snap repos:
 
 ```shell
-$ pythong3 --version
+$ snap install dmd --classic
+$ snap install ldc2 --classic
 ```
 
-**D**:  We use **DMD** and **LDC**. The two ones are available in Ubuntu official repositories.
+**Crystal**: It is avaialbe in **apt** and **snap** repositories  (see [guide](https://crystal-lang.org/install/on_ubuntu/) for more information )
+
+
+
+### Running
+
+You can run all tests using ``test.sh``
 
 ```shell
-$ sudo apt install dmd
-$ sudo apt install ldc
-...
-$ dmd --version
-DMD64 D Compiler v2.093.0
-Copyright (C) 1999-2020 by The D Language Foundation, All Rights Reserved written by Walter Bright
-$ ldc2 --version
-LDC - the LLVM D compiler (1.20.1):
-  based on DMD v2.090.1 and LLVM 10.0.0
-  built with LDC - the LLVM D compiler (1.20.1)
-  Default target: x86_64-pc-linux-gnu
-  Host CPU: skylake
-  http://dlang.org - http://wiki.dlang.org/LDC
-```
-
-**Crystal**: You must add the repository to your Ubuntu software sources and install it  (see [guide](https://crystal-lang.org/install/on_ubuntu/) for more information )
-
-### Running the test
-
-You can run all languajes tests using tests.sh
-
-```shell
-$ test.sh
+$ ./test.sh
 ```
 
 Or test them individually
@@ -183,4 +173,7 @@ $ crystal run sorted.cr --release
 
 ```shell
 $ python3 sorted.py
+```
+
+
 ```
