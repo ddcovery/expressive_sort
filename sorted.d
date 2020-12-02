@@ -4,7 +4,6 @@ void main()
   import std.stdio : writefln;
   import std.datetime.stopwatch : benchmark;
 
-  writefln("# D");
   //writefln("Generating");
   double[] numbers1M = generateNumbers(1_000_000);
   double[] numbers1M5 = generateNumbers(1_500_000);

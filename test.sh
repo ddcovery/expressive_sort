@@ -1,2 +1,12 @@
 #!/usr/bin/env sh
-crystal sorted.cr --release && sleep 2s && rdmd sorted.d --release && sleep 2s && node sorted.js && sleep 2s && python3 sorted.py
+
+echo "D (LCD)"
+ldc2 -O -release  --run sorted.d 
+echo "javascript (node)"
+node sorted.js 
+echo "Crystal"
+crystal sorted.cr --release 
+echo "D (DMD)"
+dmd -O -run sorted.d
+echo "python"
+python3 sorted.py

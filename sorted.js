@@ -4,7 +4,6 @@ const sorted = ([pivot, ...others]) => pivot === void 0 ? [] : [
   ...sorted(others.filter(n => n >= pivot))
 ];
 
-console.log("# JavasScript");
 //console.log("Generating");
 const numbers1M = [...Array(1000000).keys()].map(i => Math.random());
 const numbers1M5 = [...Array(1500000).keys()].map(i => Math.random());

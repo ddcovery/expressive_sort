@@ -1,5 +1,3 @@
-
-puts "# Crystal"
 #puts "Generating"
 numbers1M = (0..1000000).map { |x| Random.rand }
 numbers1M5 = (0..1500000).map { |x| Random.rand }

@@ -1,4 +1,3 @@
-
 def sorted(items):
   return [] if len(items) == 0 else \
     sorted([item for item in items[1:] if item < items[0]]) + \
@@ -20,7 +19,6 @@ def test():
   numbers3M = [ random.random() for a in range(3000000) ]
   numbers6M = [ random.random() for a in range(6000000) ]
 
-  print( '# Python' )
   t = measure( lambda :sorted(numbers1M) )
   print('1.0M: %d ms' %t)
   t = measure( lambda :sorted(numbers1M5) )
