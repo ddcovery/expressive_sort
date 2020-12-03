@@ -17,7 +17,7 @@ function test(times, size) {
     const numbers = [...Array(size).keys()].map(i => Math.random());
     total += measure(() => sorted(numbers));
   }
-  console.log(`"javascript",${size},${times > 0 ? Math.round(total / times) : 0}`);
+  console.log(`${size},${times > 0 ? Math.round(total / times) : 0}`);
 }
 
 function measure(f) {

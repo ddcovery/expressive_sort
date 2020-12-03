@@ -19,7 +19,7 @@ def test(times, size):
   for n in range(times):
     numbers = [ random.random() for a in range(size) ]
     total+= measure(lambda :sorted(numbers) ) 
-  print( '"python",%d,%d' %(size, total/times if times>0 else 0) )
+  print( '%d,%d' %(size, total/times if times>0 else 0) )
 
 
 for millions in C_MILLIONS:
