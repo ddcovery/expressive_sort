@@ -135,7 +135,7 @@ I include the code to the 4 tests.  Please, tell me if you see something we can 
 
 ### Prerequisites
 
-All tests has been executed on a Ubuntu 20.04 linux.
+All tests have been executed on a Ubuntu 20.04 linux.
 
 Tests require **Nodejs**, **Python3**, **Julia**, **DMD**/**LDC** D compilers and **Crystal** compiler
 
@@ -154,7 +154,7 @@ $ snap install dmd --classic
 $ snap install ldc2 --classic
 ```
 
-* **Crystal**: It is avaialbe in **apt** and **snap** repositories  (see [guide](https://crystal-lang.org/install/on_ubuntu/) for more information )
+* **Crystal**: It is availabe in **apt** and **snap** repositories  (see [guide](https://crystal-lang.org/install/on_ubuntu/) for more information )
 
 ### Running
 
