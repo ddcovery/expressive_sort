@@ -1,36 +1,26 @@
-def sorted(items):
-  return [] if len(items) == 0 else \
-    sorted([item for item in items[1:] if item < items[0]]) + \
-    items[0:1] + \
-    sorted([item for item in items[1:] if item >= items[0]])
+C_TIMES = 5
+C_MILLIONS = [1, 1.5, 3, 6]
 
-def measure(times, fun):
-  import time
+def sorted(xs):
+  return [] if len(xs) == 0 else \
+    sorted([x for x in xs[1:] if x < xs[0]]) + \
+    xs[0:1] + \
+    sorted([x for x in xs[1:] if x >= xs[0]])
+
+def measure(fun):
+  import time  
+  start = time.time()
+  fun()
+  return (time.time()-start) * 1000;
+ 
+def test(times, size):
+  import random
   total = 0;
   for n in range(times):
-    start = time.time()
-    fun()
-    end = time.time()
-    total += (end-start)
-  
-  return 0 if times == 0 else  1000 * total / times
-
-def test():
-  import random
-
-  numbers1M = [ random.random() for a in range(1000000) ]
-  numbers1M5= [ random.random() for a in range(1500000) ]
-  numbers3M = [ random.random() for a in range(3000000) ]
-  numbers6M = [ random.random() for a in range(6000000) ]
-
-  t = measure(5, lambda :sorted(numbers1M) )
-  print('1.0M: %d ms' %t)
-  t = measure(5, lambda :sorted(numbers1M5) )
-  print('1.5M: %d ms' %t)
-  t = measure(5, lambda :sorted(numbers3M) )
-  print('3.0M: %d ms' %t)
-  t = measure(5, lambda :sorted(numbers6M) )
-  print( '6.0M: %d ms' %t)
+    numbers = [ random.random() for a in range(size) ]
+    total+= measure(lambda :sorted(numbers) ) 
+  print( '"python",%d,%d' %(size, total/times if times>0 else 0) )
 
 
-test()
+for millions in C_MILLIONS:
+  test( C_TIMES, millions * 1000000)

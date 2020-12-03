@@ -1,50 +1,58 @@
 #!/usr/bin/env rdmd
+
+import std.array : array;
+
+const C_TIMES = 5;
+const C_MILLIONS = [1, 1.5, 3, 6];
+
 void main()
 {
-  import std.stdio : writefln;
-  import std.datetime.stopwatch : benchmark;
+  import std.algorithm : each;
+  import std.conv : to;
 
-  const C_TIMES = 5;
-
-  //writefln("Generating");
-  double[] numbers1M = generateNumbers(1_000_000);
-  double[] numbers1M5 = generateNumbers(1_500_000);
-  double[] numbers3M = generateNumbers(3_000_000);
-  double[] numbers6M = generateNumbers(6_000_000);
-  //writefln("Testing");
-  auto bm = benchmark!({ 
-    sorted(numbers1M);
-  }, { 
-    sorted(numbers1M5);
-  }, { 
-    sorted(numbers3M);
-  },{ 
-    sorted(numbers6M);
-  })(C_TIMES);
-  writefln("1.0M: %s ms", bm[0].total!"msecs"/C_TIMES);
-  writefln("1.5M: %s ms", bm[1].total!"msecs"/C_TIMES);
-  writefln("3.0M: %s ms", bm[2].total!"msecs"/C_TIMES);
-  writefln("6.0M: %s ms", bm[3].total!"msecs"/C_TIMES);
-  
-  //writefln("Ok");
+  C_MILLIONS.each!(millions => 
+    C_TIMES.test( (millions * 1_000_000).to!ulong )
+  );
 }
 
-T[] sorted(T)(T[] items)
+T[] sorted(T)(T[] xs)
 {
   import std.algorithm : filter;
-  import std.array : array;
 
-  return items.length == 0 ? [] : 
-    sorted( items[1 .. $].filter!(item => item < items[0]).array() ) ~ 
-    items[0 .. 1] ~ 
-    sorted( items[1 .. $].filter!(item => item >= items[0]).array() );
+  return xs.length == 0 ? [] : 
+    xs[1 .. $].filter!(x => x < xs[0]).array.sorted ~ 
+    xs[0 .. 1] ~ 
+    xs[1 .. $].filter!(x => x >= xs[0]).array.sorted;
 }
-double [] generateNumbers(int howMany)
+
+void test(ulong times, ulong size)
 {
-  import std.range: generate, take;  
-  import std.array: array;
-  import std.random: Random, uniform, unpredictableSeed;
-  auto rnd = Random(unpredictableSeed); 
-  return generate!(() => uniform(0.,1.,rnd) )().take(howMany).array();
-  
+  import std.stdio : writefln;
+  import std.range : iota;
+  import std.algorithm : map, sum;
+
+  auto avg = times == 0 ? 0 : 
+    iota(times)
+    .map!(_ => generateNumbers(size))
+    .map!(xs => measure!(() => xs.sorted))
+    .sum() / times;
+
+  "%s,%d,%d".writefln('D', size, avg);
+}
+
+auto generateNumbers(long howMany)
+{
+  import std.range : generate, take;
+  import std.random : Random, uniform, unpredictableSeed;
+
+  auto rnd = Random(unpredictableSeed);
+  return generate!(() => uniform(0., 1., rnd))().take(howMany).array();
+}
+
+auto measure(alias f)()
+{
+  import std.datetime.stopwatch : benchmark;
+
+  auto bm = benchmark!(f)(1);
+  return bm[0].total!"msecs";
 }
