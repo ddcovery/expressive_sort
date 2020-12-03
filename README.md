@@ -1,4 +1,4 @@
-# expressive_sort
+# expressive sort
 
 In this quora [answere](https://es.quora.com/Por-qu%C3%A9-la-mayor%C3%ADa-de-los-desarrolladores-estudian-solo-lenguajes-muy-simples-como-JavaScript-y-Python-en-lugar-de-aprender-un-lenguaje-verdadero-como-C-2/answer/Antonio-Cabrera-52) I wrote about javascript/python expressiveness vs Go/Rust/D/... performance.
 
@@ -45,9 +45,9 @@ Here comes the surprise (at least for me):  Javascript version performs better t
 * Javascript (**node**):  **1610 ms**
 * D (**DMD compiler**):  **2017 ms**
 
-Even if I add optimization parameters (-o -release) to **dmd** compiler,  it's generated execuatable continues running slowly.  Fortunately, there is an standard D compiler alternative: **lcd2** .  The resulting binaries are optimized:
+Even if I add optimization parameters (-o -release) to **dmd** compiler,  it's generated execuatable continues running slowly.  Fortunately, D has 3 compilers: DMD (official reference compiler), GDC (GCC based compiler) and LDC (LLVM based compiler).
 
-* D (**LDC2 compiler**):  **772 ms** !!!
+* D (**LDC compiler**):  **772 ms** !!!
 
 That's speed :-)
 
@@ -127,20 +127,16 @@ All tests has been executed on a Ubuntu 20.04 linux.
 
 Tests require **Nodejs**, **Python3**, **DMD**/**LDC** D compilers and **Crystal** compiler
 
-**Javascript**:  Test runs on Node, I use node 12.20 (see [NodeSource distributions](https://github.com/nodesource/distributions/blob/master/README.md) for more information)
-
-**Python**:  Ubuntu comes with **python 3** preinstalled.
-
-**D**:  We use **DMD** and **LDC** compilers. They are available in **apt**  and **snap** repositories (see [guide](https://dlang.org/download.html) ) **.
-
-Because ldc2 version is newest in snap, I use snap repos:
+* **Nodejs**:  I use node 12.20 (see [NodeSource distributions](https://github.com/nodesource/distributions/blob/master/README.md) for more information)
+* **Python3**:  Ubuntu comes with **python 3** preinstalled.
+* **DMD** and **LDC**:  They are available in **apt**  and **snap** repositories (see [guide](https://dlang.org/download.html) ) **.  Because **ldc** version is newest in snap, I use snap repos:
 
 ```shell
 $ snap install dmd --classic
 $ snap install ldc2 --classic
 ```
 
-**Crystal**: It is avaialbe in **apt** and **snap** repositories  (see [guide](https://crystal-lang.org/install/on_ubuntu/) for more information )
+* **Crystal**: It is avaialbe in **apt** and **snap** repositories  (see [guide](https://crystal-lang.org/install/on_ubuntu/) for more information )
 
 ### Running
 
@@ -156,38 +152,34 @@ If no want to generate a ``result.csv`` file
 $ ./test.sh | tee result.csv
 ```
 
-If you prefer to run tests individually
+If you prefer to run tests individually:
 
-**D (LDC)**
+* D (LDC)
 
 ```shell
 $ ldc2 -O5 -release -enable-cross-module-inlining --run sorted.d 
 ```
 
-**D (DMD)**
+* D (DMD)
 
 ```shell
 $ dmd -O -release -run sorted.d
 ```
 
-**Javascript**
+* Javascript
 
 ```shell
 $ node sorted.js
 ```
 
-**Crystal**
+* Crystal
 
 ```shell
 $ crystal run sorted.cr --release
 ```
 
-**Python**
+* Python
 
 ```shell
 $ python3 -OO sorted.py
-```
-
-```
-
 ```
