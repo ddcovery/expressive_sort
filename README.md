@@ -19,16 +19,19 @@ As an enthusiastic newbie to the "[D](https://dlang.org)" programming language, 
 D has no support for destructuring as javascript has (remember de ```sorted([pivot, ...others])```), but it has **lambdas**, **map/filter/reduce** support, **array slices** and **array concatenation** that allows you to write easily a similar expression:
 
 ```d
-T[] sorted(T)(T[] items)
+T[] sorted(T)(T[] xs)
 {
-  return items.length == 0 ? [] : 
-    sorted(items[1 .. $].filter!(p => p < items[0]).array) ~ 
-    items[0 .. 1] ~ 
-    sorted(items[1 .. $].filter!(p => p >= items[0]).array);
+  return xs.length == 0 ? [] : 
+    xs[1 .. $].filter!(x=> x < xs[0]) .array.sorted ~ 
+    xs[0 .. 1] ~ 
+    xs[1 .. $].filter!(x=> x >= xs[0]).array.sorted;
 }
+
 ```
 
-> **note**: **sorted** is a *templated method* (**T** is the type of the elements of the array): "under the scenes", D compiler detects if the final used type is comparable (i.e.:  it is a class with a **opCmp** method, or it is a numerical type, or ...):  yo don't need to tell compiler that T extends something like *"IComparable"* because D libraries are not "interface" based:  D prefers to use "conventions" and check them using instrospection at compile time (D developers write compile-time code and run-time code at the same time:  D allows you to mix them naturally).
+> **note**:  D notation allows to write **foo(a)** as **a.foo()** or **a.foo**, this is the reason we can write *sorted( array( something ) )* as *something.array.sorted*
+>
+> **note**: **sorted** is a *templated method* (**T** is the type of the elements of the array): "under the scenes", D compiler detects if the final used type is comparable (i.e.:  it is a class with a **opCmp** method, or it is a numerical type, or ...):  yo don't need to tell that T extends something like *"IComparable"* because D libraries are not "interface" based:  D prefers to use "conventions" and check them using instrospection at compile time (D developers write compile-time code and run-time code at the same time:  D allows you to mix them naturally).
 
 Seeing the similarities, I assume (I really don't know) that javascript and D versions are doing the same "under the scenes":
 
@@ -133,8 +136,6 @@ $ snap install ldc2 --classic
 
 **Crystal**: It is avaialbe in **apt** and **snap** repositories  (see [guide](https://crystal-lang.org/install/on_ubuntu/) for more information )
 
-
-
 ### Running
 
 You can run all tests using ``test.sh``
@@ -175,5 +176,6 @@ $ crystal run sorted.cr --release
 $ python3 sorted.py
 ```
 
+```
 
 ```
