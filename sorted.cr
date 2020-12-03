@@ -18,7 +18,7 @@ def test( times : Int32, n : Int32 )
     numbers = (0..n-1).map { |x| Random.rand }
     total += measure { sorted(numbers) }
   end
-  puts "\"crystal\",#{n},#{ times>0 ? (total/times).ceil : 0}"
+  puts "\"crystal\",#{n},#{ times>0 ? (total/times).to_i : 0}"
 end
 
 def measure
