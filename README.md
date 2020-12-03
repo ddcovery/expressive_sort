@@ -74,11 +74,11 @@ def sorted(xs : Array(Float64)) : Array(Float64)
 end
 ```
 
-In Julia
+In Julia (thanks to [Camilo Chacón Sartori](https://github.com/camilochs))
 
 ```julia
 function sorted(xs::Array{Float64, 1})::Array{Float64, 1}
-  return length(xs) == 0 ? [] : vcat(
+  return length(xs) == 0 ? Array{Float64, 1}() : vcat(
     sorted([x for x in xs[2:end] if x < xs[1]]),
     xs[1],
     sorted([x for x in xs[2:end] if x >= xs[1]])
