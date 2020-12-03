@@ -45,7 +45,7 @@ Here comes the surprise (at least for me):  Javascript version performs better t
 * Javascript (**node**):  **1610 ms**
 * D (**DMD compiler**):  **2017 ms**
 
-Even if I add optimization parameters (-o -release) to **dmd** compiler,  it's generated execuatable continues running slowly.  Fortunately, D has 3 compilers: DMD (official reference compiler), GDC (GCC based compiler) and LDC (LLVM based compiler).
+Fortunately, D has 3 compilers: DMD (official reference compiler), GDC (GCC based compiler) and LDC (LLVM based compiler).
 
 * D (**LDC compiler**):  **772 ms** !!!
 
@@ -53,7 +53,7 @@ That's speed :-)
 
 I decided to write similar code in other languajes to compare.
 
-In python:
+In Python:
 
 ```python
 def sorted(xs):
@@ -63,7 +63,7 @@ def sorted(xs):
     sorted([x for x in xs[1:] if x >= xs[0]])
 ```
 
-In crystal:
+In Crystal:
 
 ```ruby
 def sorted(xs : Array(Float64)) : Array(Float64)
@@ -71,6 +71,18 @@ def sorted(xs : Array(Float64)) : Array(Float64)
     sorted(x[1..].select { |x| x < xs[0] }) +
     [ xs[0] ] +
     sorted(xs[1..].select { |x| x >= xs[0] })
+end
+```
+
+In Julia
+
+```julia
+function sorted(xs::Array{Float64, 1})::Array{Float64, 1}
+  return length(xs) == 0 ? [] : vcat(
+    sorted([x for x in xs[2:end] if x < xs[1]]),
+    xs[1],
+    sorted([x for x in xs[2:end] if x >= xs[1]])
+  )
 end
 ```
 
@@ -125,11 +137,17 @@ I include the code to the 4 tests.  Please, tell me if you see something we can 
 
 All tests has been executed on a Ubuntu 20.04 linux.
 
-Tests require **Nodejs**, **Python3**, **DMD**/**LDC** D compilers and **Crystal** compiler
+Tests require **Nodejs**, **Python3**, **Julia**, **DMD**/**LDC** D compilers and **Crystal** compiler
 
 * **Nodejs**:  I use node 12.20 (see [NodeSource distributions](https://github.com/nodesource/distributions/blob/master/README.md) for more information)
 * **Python3**:  Ubuntu comes with **python 3** preinstalled.
-* **DMD** and **LDC**:  They are available in **apt**  and **snap** repositories (see [guide](https://dlang.org/download.html) ) **.  Because **ldc** version is newest in snap, I use snap repos:
+* **Julia**: It is available in apt and snap repositories.  The apt version is newest (but not latest). See [download page](https://julialang.org/downloads/) for newest versions
+
+```shell
+$ sudo apt install julia
+```
+
+* **DMD** and **LDC**:  They are available in **apt**  and **snap** repositories (see [guide](https://dlang.org/download.html) ) .  Because **ldc** version is newest in snap, I use snap repos:
 
 ```shell
 $ snap install dmd --classic
@@ -182,4 +200,10 @@ $ crystal run sorted.cr --release
 
 ```shell
 $ python3 -OO sorted.py
+```
+
+* Julia
+
+```shell
+julia -O3 --inline=yes --check-bounds=no sorted.jl
 ```
