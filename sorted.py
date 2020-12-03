@@ -23,4 +23,4 @@ def test(times, size):
 
 
 for millions in C_MILLIONS:
-  test( C_TIMES, millions * 1000000)
+  test( C_TIMES, int(millions * 1000000) )
