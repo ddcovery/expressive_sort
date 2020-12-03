@@ -37,7 +37,7 @@ void test(ulong times, ulong size)
     .map!(xs => measure!(() => xs.sorted))
     .sum() / times;
 
-  "%s,%d,%d".writefln('D', size, avg);
+  "%s,%d,%d".writefln("\"D\"", size, avg);
 }
 
 auto generateNumbers(long howMany)
