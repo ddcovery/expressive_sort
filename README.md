@@ -22,9 +22,9 @@ D has no support for destructuring as javascript has (remember de ```sorted([piv
 T[] sorted(T)(T[] xs)
 {
   return xs.length == 0 ? [] : 
-    xs[1 .. $].filter!(x=> x < xs[0]) .array.sorted ~ 
-    xs[0 .. 1] ~ 
-    xs[1 .. $].filter!(x=> x >= xs[0]).array.sorted;
+    xs[1..$].filter!(x=> x < xs[0]).array.sorted ~ 
+    xs[0..1] ~ 
+    xs[1..$].filter!(x=> x >= xs[0]).array.sorted;
 }
 
 ```
@@ -42,68 +42,74 @@ Seeing the similarities, I assume (I really don't know) that javascript and D ve
 
 Here comes the surprise (at least for me):  Javascript version performs better than D version (about **30% faster for 1_000_000 random Float64 numbers**).
 
-* Javascript (node):  **1610 ms**
-* D (DMD compiler):  **2017 ms**
+* Javascript (**node**):  **1610 ms**
+* D (**DMD compiler**):  **2017 ms**
 
-Main problem is DMD compiler (compiles fast, but resulting executable is poorly optimized).  A good alternative is the **lcd2** compiler that generates can generate optimized binaries
+Even if I add optimization parameters (-o -release) to **dmd** compiler,  it's generated execuatable continues running slowly.  Fortunately, there is an standard D compiler alternative: **lcd2** .  The resulting binaries are optimized:
 
-* D (LDC2 compiler):  **772 ms**
+* D (**LDC2 compiler**):  **772 ms** !!!
 
-I decided to write similar code in other languajes and compare.
+That's speed :-)
+
+I decided to write similar code in other languajes to compare.
 
 In python:
 
 ```python
-def sorted(items):
-  return [] if len(items) == 0 else \
-    sorted([item for item in items[1:] if item < items[0]]) + \
-    items[0:1] + \
-    sorted([item for item in items[1:] if item >= items[0]])
+def sorted(xs):
+  return [] if len(xs) == 0 else \
+    sorted([x for x in xs[1:] if x < xs[0]]) + \
+    xs[0:1] + \
+    sorted([x for x in xs[1:] if x >= xs[0]])
 ```
 
 In crystal:
 
 ```ruby
-def sorted(a : Array(Float64)) : Array(Float64)
-  return a.size == 0 ? [] of Float64  :
-    sorted(a[1..].select { |x| x < a[0] }) +
-    [ a[0] ] +
-    sorted(a[1..].select { |x| x >= a[0] })
+def sorted(xs : Array(Float64)) : Array(Float64)
+  return xs.size == 0 ? [] of Float64  :
+    sorted(x[1..].select { |x| x < xs[0] }) +
+    [ xs[0] ] +
+    sorted(xs[1..].select { |x| x >= xs[0] })
 end
 ```
 
-The resulting final table for different sets of data
+Fore better measurement, each test is internally ran 5 times, each time with a newly generated set of numbers (to avoid run-to-run optimization effects).
+
+The results, as CSV, are
+
+```csv
+compiler,lang,size,ms
+"ldc2","D",1000000,667
+"ldc2","D",1500000,1017
+"ldc2","D",3000000,2083
+"ldc2","D",6000000,4348
+"crystal","crystal",1000000,868
+"crystal","crystal",1500000,1310
+"crystal","crystal",3000000,2710
+"crystal","crystal",6000000,5680
+"node","javascript",1000000,1722
+"node","javascript",1500000,2378
+"node","javascript",3000000,5003
+"node","javascript",6000000,10676
+"dmd","D",1000000,2000
+"dmd","D",1500000,3056
+"dmd","D",3000000,6659
+"dmd","D",6000000,13547
+"python3","python",1000000,5073
+"python3","python",1500000,8361
+"python3","python",3000000,19456
+"python3","python",6000000,44671
+
+```
+
+Execution time histogram by array size:
 
 ![Process time](assets/process_time_graph.png)
 
-```
-D (DMD)
-1.0M: 1838 ms
-1.5M: 2833 ms
-3.0M: 5885 ms
-6.0M: 12016 ms
-D (LCD)
-1.0M: 665 ms
-1.5M: 1074 ms
-3.0M: 2234 ms
-6.0M: 4500 ms
-Crystal
-1.0M: 771.0 ms
-1.5M: 1152.0 ms
-3.0M: 2321.0 ms
-6.0M: 4772.0 ms
-javascript (node)
-1.0M: 1342 ms
-1.5M: 2119.6 ms
-3.0M: 5187.2 ms
-6.0M: 9785.2 ms
-python
-1.0M: 4509 ms
-1.5M: 7691 ms
-3.0M: 19277 ms
-6.0M: 42620 ms
+Python is a heavy outlayer... to better comparison we can remove it
 
-```
+![Process time without python](assets/process_time_graph_without_python.png)
 
 ## Do you know how to improve?
 
@@ -141,10 +147,16 @@ $ snap install ldc2 --classic
 You can run all tests using ``test.sh``
 
 ```shell
-$ ./test.sh
+$ ./test.sh 
 ```
 
-Or test them individually
+If no want to generate a ``result.csv`` file
+
+```shell
+$ ./test.sh | tee result.csv
+```
+
+If you prefer to run tests individually
 
 **D (LDC)**
 
@@ -173,7 +185,7 @@ $ crystal run sorted.cr --release
 **Python**
 
 ```shell
-$ python3 sorted.py
+$ python3 -OO sorted.py
 ```
 
 ```
