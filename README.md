@@ -92,36 +92,36 @@ The results, as CSV, are
 
 ```csv
 compiler,lang,size,ms
-"ldc2","D",1000000,667
-"ldc2","D",1500000,1017
-"ldc2","D",3000000,2083
-"ldc2","D",6000000,4348
-"crystal","crystal",1000000,868
-"crystal","crystal",1500000,1310
-"crystal","crystal",3000000,2710
-"crystal","crystal",6000000,5680
-"node","javascript",1000000,1722
-"node","javascript",1500000,2378
-"node","javascript",3000000,5003
-"node","javascript",6000000,10676
-"dmd","D",1000000,2000
-"dmd","D",1500000,3056
-"dmd","D",3000000,6659
-"dmd","D",6000000,13547
-"python3","python",1000000,5073
-"python3","python",1500000,8361
-"python3","python",3000000,19456
-"python3","python",6000000,44671
+"ldc2","D",1000000,647
+"ldc2","D",1500000,978
+"ldc2","D",3000000,2025
+"ldc2","D",6000000,4152
+"crystal","Crystal",1000000,723
+"crystal","Crystal",1500000,1119
+"crystal","Crystal",3000000,2297
+"crystal","Crystal",6000000,4872
+"node","Javascript",1000000,1379
+"node","Javascript",1500000,2076
+"node","Javascript",3000000,4464
+"node","Javascript",6000000,9636
+"dmd","D",1000000,1793
+"dmd","D",1500000,2772
+"dmd","D",3000000,5762
+"dmd","D",6000000,11942
+"julia","julia",1000000,3210
+"julia","julia",1500000,4791
+"julia","julia",3000000,9772
+"julia","julia",6000000,20283
+"python3","Python",1000000,4635
+"python3","Python",1500000,7379
+"python3","Python",3000000,17620
+"python3","Python",6000000,41626
 
 ```
 
 Execution time histogram by array size:
 
 ![Process time](assets/process_time_graph.png)
-
-Python is a heavy outlayer... to better comparison we can remove it
-
-![Process time without python](assets/process_time_graph_without_python.png)
 
 ## Do you know how to improve?
 
@@ -207,3 +207,8 @@ $ python3 -OO sorted.py
 ```shell
 julia -O3 --inline=yes --check-bounds=no sorted.jl
 ```
+
+## thanks to
+
+* [Camilo Chacón Sartori](https://github.com/camilochs) For the Julia code
+* [Max Haughton](https://github.com/maxhaton) For the proper DMD/LDC optimisation settings
