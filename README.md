@@ -86,6 +86,20 @@ function sorted(xs::Array{Float64, 1})::Array{Float64, 1}
 end
 ```
 
+In Scala
+
+```scala
+def sorted( xs:List[Double] ): List[Double] =
+  xs match {
+    case Nil =>
+      List()
+    case pivot :: rest =>
+      sorted( rest.filter( _ < pivot ) ) ++
+      List(pivot) ++
+      sorted( rest.filter( _ >= pivot ) )
+  }
+```
+
 Fore better measurement, each test is internally ran 5 times, each time with a newly generated set of numbers (to avoid run-to-run optimization effects).
 
 The results, as CSV, are
@@ -108,6 +122,10 @@ compiler,lang,size,ms
 "dmd","D",1500000,2772
 "dmd","D",3000000,5762
 "dmd","D",6000000,11942
+"scala","Scala",1000000,2279
+"scala","Scala",1500000,3448
+"scala","Scala",3000000,8086
+"scala","Scala",6000000,23369
 "julia","julia",1000000,3210
 "julia","julia",1500000,4791
 "julia","julia",3000000,9772
