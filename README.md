@@ -137,11 +137,18 @@ compiler,lang,size,ms
 "dmd","D",1500000,2800
 "dmd","D",3000000,6002
 "dmd","D",6000000,12206
+"scala","Scala",1000000,1678
+"scala","Scala",1500000,3128
+"scala","Scala",3000000,6522
+"scala","Scala",6000000,22633
 "julia","julia",1000000,3378
 "julia","julia",1500000,5246
 "julia","julia",3000000,10357
 "julia","julia",6000000,22813
-
+"python3","Python",1000000,5316
+"python3","Python",1500000,8382
+"python3","Python",3000000,19206
+"python3","Python",6000000,41887
 ```
 
 Execution time histogram by array size:
