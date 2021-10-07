@@ -21,6 +21,5 @@ def test(times, size):
     total+= measure(lambda :sorted(numbers) ) 
   print( '%d,%d' %(size, total/times if times>0 else 0) )
 
-
 for millions in C_MILLIONS:
   test( C_TIMES, int(millions * 1000000) )

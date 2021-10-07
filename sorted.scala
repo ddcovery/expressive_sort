@@ -8,7 +8,6 @@ object Main {
     C_Millions.foreach( millions => 
       test(C_Times, (millions * 1000000d).toLong ) 
     )
-  
 
   def sorted( xs:List[Double] ) : List[Double] = 
     xs match {
@@ -34,7 +33,6 @@ object Main {
 
     printf("%d,%d\n",size, avg)
   }
-
 
   def measure(block: ()=>List[Double]): Long = {
     val t0 = System.nanoTime()

@@ -40,14 +40,14 @@ Seeing the similarities, I assume (I really don't know) that javascript and D ve
 
 ## Wich one will perform better?
 
-Here comes the surprise (at least for me):  Javascript version performs better than D version (about **30% faster for 1_000_000 random Float64 numbers**).
+First surprise was Javascript (nodejs) version performs better than D (about **30% faster for 1_000_000 random Float64 numbers**).
 
 * Javascript (**node**):  **1610 ms**
 * D (**DMD compiler**):  **2017 ms**
 
 Fortunately, D has 3 compilers: DMD (official reference compiler), GDC (GCC based compiler) and LDC (LLVM based compiler).
 
-* D (**LDC compiler**):  **772 ms** !!!
+* D (**LDC compiler**):  **693 ms** !!!
 
 That's speed :-)
 
@@ -100,46 +100,57 @@ def sorted( xs:List[Double] ): List[Double] =
   }
 ```
 
-Fore better measurement, each test is internally ran 5 times, each time with a newly generated set of numbers (to avoid run-to-run optimization effects).
+In Nim
+
+```nim
+func sorted[T](xs:seq[T]): seq[T] = 
+  if xs.len==0: @[] else: concat(
+    xs[1..^1].filter(x=>x<xs[0]).sorted,
+    @[xs[0]],
+    xs[1..^1].filter(x=>x>=xs[0]).sorted
+  )
+```
+
+For better measurement, each test is internally ran 5 times, each time with a newly generated set of numbers (to avoid run-to-run optimization effects).
 
 The results, as CSV, are
 
 ```csv
 compiler,lang,size,ms
-"ldc2","D",1000000,647
-"ldc2","D",1500000,978
-"ldc2","D",3000000,2025
-"ldc2","D",6000000,4152
-"crystal","Crystal",1000000,723
-"crystal","Crystal",1500000,1119
-"crystal","Crystal",3000000,2297
-"crystal","Crystal",6000000,4872
-"node","Javascript",1000000,1379
-"node","Javascript",1500000,2076
-"node","Javascript",3000000,4464
-"node","Javascript",6000000,9636
-"dmd","D",1000000,1793
-"dmd","D",1500000,2772
-"dmd","D",3000000,5762
-"dmd","D",6000000,11942
-"scala","Scala",1000000,2279
-"scala","Scala",1500000,3448
-"scala","Scala",3000000,8086
-"scala","Scala",6000000,23369
-"julia","julia",1000000,3210
-"julia","julia",1500000,4791
-"julia","julia",3000000,9772
-"julia","julia",6000000,20283
-"python3","Python",1000000,4635
-"python3","Python",1500000,7379
-"python3","Python",3000000,17620
-"python3","Python",6000000,41626
+"ldc2","D",1000000,693
+"ldc2","D",1500000,1049
+"ldc2","D",3000000,2232
+"ldc2","D",6000000,4491
+"crystal","Crystal",1000000,821
+"crystal","Crystal",1500000,1389
+"crystal","Crystal",3000000,2891
+"crystal","Crystal",6000000,5454
+"nim","Nim",1000000,1149
+"nim","Nim",1500000,1795
+"nim","Nim",3000000,3456
+"nim","Nim",6000000,7260
+"node","Javascript",1000000,1634
+"node","Javascript",1500000,2227
+"node","Javascript",3000000,4509
+"node","Javascript",6000000,10172
+"dmd","D",1000000,1927
+"dmd","D",1500000,2800
+"dmd","D",3000000,6002
+"dmd","D",6000000,12206
+"julia","julia",1000000,3378
+"julia","julia",1500000,5246
+"julia","julia",3000000,10357
+"julia","julia",6000000,22813
 
 ```
 
 Execution time histogram by array size:
 
-![Process time](assets/process_time_graph.png)
+![Process time](assets/process_time_graph_linear.png)
+
+Changing to logaritmic scale
+
+![Process time](assets/process_time_graph_log.png)
 
 ## Do you know how to improve?
 
@@ -155,7 +166,7 @@ I include the code to the 4 tests.  Please, tell me if you see something we can 
 
 All tests have been executed on a Ubuntu 20.04 linux.
 
-Tests require **Nodejs**, **Python3**, **Julia**, **DMD**/**LDC** D compilers and **Crystal** compiler
+Tests require **Nodejs**, **Python3**, **Julia**, **DMD**/**LDC** for D, **scala**, **Nim** and **Crystal** compilers
 
 * **Nodejs**:  I use node 12.20 (see [NodeSource distributions](https://github.com/nodesource/distributions/blob/master/README.md) for more information)
 * **Python3**:  Ubuntu comes with **python 3** preinstalled.
@@ -171,8 +182,14 @@ $ sudo apt install julia
 $ snap install dmd --classic
 $ snap install ldc2 --classic
 ```
+* **scala** 2.11.12: It is availabe in **apt** repository
+```shell
+$ sudo apt install scala
+```
 
 * **Crystal**: It is availabe in **apt** and **snap** repositories  (see [guide](https://crystal-lang.org/install/on_ubuntu/) for more information )
+
+
 
 ### Running
 
