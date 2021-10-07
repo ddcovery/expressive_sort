@@ -40,7 +40,7 @@ Seeing the similarities, I assume (I really don't know) that javascript and D ve
 
 ## Wich one will perform better?
 
-First surprise was Javascript (nodejs) version performs better than D (about **30% faster for 1_000_000 random Float64 numbers**).
+First surprise was Javascript (nodejs) version performs better than D (about **20% faster for 1_000_000 random Float64 numbers**).
 
 * Javascript (**node**):  **1610 ms**
 * D (**DMD compiler**):  **2017 ms**
