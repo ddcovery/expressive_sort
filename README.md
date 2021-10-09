@@ -26,7 +26,6 @@ T[] sorted(T)(T[] xs)
     xs[0..1] ~ 
     xs[1..$].filter!(x=> x >= xs[0]).array.sorted;
 }
-
 ```
 
 > **note**:  D notation allows to write **foo(a)** as **a.foo()** or **a.foo**, this is the reason we can write *sorted( array( something ) )* as *something.array.sorted*
@@ -50,6 +49,21 @@ Fortunately, D has 3 compilers: DMD (official reference compiler), GDC (GCC base
 * D (**LDC compiler**):  **693 ms** !!!
 
 That's speed :-)
+
+After some tests, I realized javascript destructuring [pivot,...others] caused a performance penalty and I rewrote to a more efficient version (very similar to D syntax)
+
+```javascript
+const sorted = (xs) => xs.length===0 ? [] : [
+  ...sorted(xs.slice(1).filter(x => x < xs[0])),
+  xs[0],
+  ...sorted(xs.slice(1).filter(x => x >= xs[0]))
+];
+```
+
+And the execution on 1M floats whas ***921 ms ***!!!
+
+That's impressive :-O
+
 
 I decided to write similar code in other languajes to compare.
 
@@ -111,44 +125,46 @@ func sorted[T](xs:seq[T]): seq[T] =
   )
 ```
 
-For better measurement, each test is internally ran 5 times, each time with a newly generated set of numbers (to avoid run-to-run optimization effects).
+For better measurement:
+* each test is internally ran 5 times, each time with a newly generated set of numbers (to avoid run-to-run optimization effects).
+* Between compilers tests, there is a pause of 30s to normalize system (Mainly CPU temperature)
 
 The results, as CSV, are
 
 ```csv
 compiler,lang,size,ms
-"ldc2","D",1000000,693
-"ldc2","D",1500000,1049
-"ldc2","D",3000000,2232
-"ldc2","D",6000000,4491
-"crystal","Crystal",1000000,821
-"crystal","Crystal",1500000,1389
-"crystal","Crystal",3000000,2891
-"crystal","Crystal",6000000,5454
-"nim","Nim",1000000,1149
-"nim","Nim",1500000,1795
-"nim","Nim",3000000,3456
-"nim","Nim",6000000,7260
-"node","Javascript",1000000,1634
-"node","Javascript",1500000,2227
-"node","Javascript",3000000,4509
-"node","Javascript",6000000,10172
-"dmd","D",1000000,1927
-"dmd","D",1500000,2800
-"dmd","D",3000000,6002
-"dmd","D",6000000,12206
-"scala","Scala",1000000,1678
-"scala","Scala",1500000,3128
-"scala","Scala",3000000,6522
-"scala","Scala",6000000,22633
-"julia","julia",1000000,3378
-"julia","julia",1500000,5246
-"julia","julia",3000000,10357
-"julia","julia",6000000,22813
-"python3","Python",1000000,5316
-"python3","Python",1500000,8382
-"python3","Python",3000000,19206
-"python3","Python",6000000,41887
+"ldc2","D",1000000,645
+"ldc2","D",1500000,978
+"ldc2","D",3000000,2013
+"ldc2","D",6000000,4165
+"crystal","Crystal",1000000,713
+"crystal","Crystal",1500000,1102
+"crystal","Crystal",3000000,2277
+"crystal","Crystal",6000000,4750
+"node","Javascript",1000000,904
+"node","Javascript",1500000,1384
+"node","Javascript",3000000,2977
+"node","Javascript",6000000,6117
+"nim","Nim",1000000,1038
+"nim","Nim",1500000,1564
+"nim","Nim",3000000,3352
+"nim","Nim",6000000,6951
+"scala","Scala",1000000,1524
+"scala","Scala",1500000,2537
+"scala","Scala",3000000,5741
+"scala","Scala",6000000,19819
+"dmd","D",1000000,1818
+"dmd","D",1500000,2773
+"dmd","D",3000000,5822
+"dmd","D",6000000,12123
+"julia","julia",1000000,3224
+"julia","julia",1500000,4648
+"julia","julia",3000000,9429
+"julia","julia",6000000,20264
+"python3","Python",1000000,4512
+"python3","Python",1500000,7339
+"python3","Python",3000000,17428
+"python3","Python",6000000,38981
 ```
 
 Execution time histogram by array size:
@@ -161,7 +177,7 @@ Changing to logaritmic scale
 
 ## Do you know how to improve?
 
-I include the code to the 4 tests.  Please, tell me if you see something we can improve:
+I include the code to the 7 tests.  Please, tell me if you see something we can improve:
 
 * Avoid imperative instructions:  "sorted" must be an unique expression or, at least, an unique "return ..." statement funcion.
 * Of course, you can't use built-in library sort methods :-)
