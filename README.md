@@ -53,11 +53,11 @@ That's speed :-)
 After some tests, I realized javascript destructuring [pivot,...others] caused a performance penalty and I rewrote to a more efficient version (very similar to D syntax)
 
 ```javascript
-const sorted = (xs) => xs.length===0 ? [] : [
-  ...sorted(xs.slice(1).filter(x => x < xs[0])),
+const sorted = (xs) => xs.length===0 ? [] : [].concat(
+  sorted(xs.slice(1).filter(x => x < xs[0])),
   xs[0],
-  ...sorted(xs.slice(1).filter(x => x >= xs[0]))
-];
+  sorted(xs.slice(1).filter(x => x >= xs[0]))
+);
 ```
 
 And the execution on 1M floats whas ***921 ms ***!!!
