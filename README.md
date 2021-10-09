@@ -5,11 +5,12 @@ In this quora [answere](https://es.quora.com/Por-qu%C3%A9-la-mayor%C3%ADa-de-los
 As an example, I mentioned the "3 lines" haskell quick sort and wrote this javascript version
 
 ```javascript
-const sorted = ([pivot, ...others]) => pivot === void 0 ? [] : [
-  ...sorted(others.filter(n => n < pivot)),
-  pivot,
-  ...sorted(others.filter(n => n >= pivot))
-];
+const sorted = ([pivot, ...others]) => 
+  pivot === void 0 ? [] : [
+    ...sorted(others.filter(n => n < pivot)),
+    pivot,
+    ...sorted(others.filter(n => n >= pivot))
+  ];
 ```
 
 This, of course, is not a "quick sort" because the original one is an "in place" algorithm that doesn't require additional memory space allocation.  This is a functional oriented expression that exemplarizes how expressive a "functional" orientation can be (You "express" that the sorted version of an array is, given one of it's elements, the sorted version of the smaller ones, plus the item, plus the sorted version of the bigger ones).
