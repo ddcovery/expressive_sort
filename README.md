@@ -62,7 +62,7 @@ const sorted = (xs) =>
   );
 ```
 
-And the execution on 1M floats whas ***921 ms ***!!!
+And the execution on 1M floats whas **921 ms**!!!
 
 That's impressive :-O
 
