@@ -171,7 +171,7 @@ Execution time histogram by array size:
 
 ![Process time](assets/process_time_graph_linear.png)
 
-Changing to logaritmic scale
+Changing to logarithmic scale
 
 ![Process time](assets/process_time_graph_log.png)
 
