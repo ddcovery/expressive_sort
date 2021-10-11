@@ -129,7 +129,7 @@ func sorted[T](xs:seq[T]): seq[T] =
 
 For better measurement:
 * each test is internally ran 5 times, each time with a newly generated set of numbers (to avoid run-to-run optimization effects).
-* Between compilers tests, there is a pause of 30s to normalize system (Mainly CPU temperature)
+* Between compilers (or interpreters) tests, there is a pause of 30s to normalize system (Mainly CPU temperature)
 
 The results, as CSV, are
 
